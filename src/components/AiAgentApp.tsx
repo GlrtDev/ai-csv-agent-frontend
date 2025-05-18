@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { File, FilePlus, BrainCircuit, CheckCircle, AlertTriangle } from 'lucide-react';
+import { File, FilePlus, BrainCircuit, CheckCircle, AlertTriangle, Bot } from 'lucide-react';
 import { toast } from 'sonner';
 import { type AppState, initialAppState } from '../types/Types'; // Import the types
 import { handleFileUpload, handleSendPromptRequest } from '../lib/Api'; // Import the API functions
@@ -69,11 +69,11 @@ const AIAgentApp: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-8">
             <div className="max-w-4xl mx-auto space-y-6">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text" style={{ lineHeight: '1.2' }}>
-                    Cheapest Data Analyst
+                    AI Data Analyst Tool
                 </h1>
-                <h1 className="text-1xl sm:text-2xl md:text-2xl font-bold text-center bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-                (that you can find under 1 minute)
-                </h1>
+                <h2 className="text-1xl sm:text-2xl md:text-2xl font-bold text-center bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                Upload your CSV, ask your questions, and get AI-powered insights!
+                </h2>
 
                 <div className="bg-gray-900/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-gray-700 shadow-lg space-y-4">
                     <h2 className="text-xl sm:text-2xl font-semibold flex items-center gap-2">
@@ -90,7 +90,7 @@ const AIAgentApp: React.FC = () => {
                             onClick={handleUploadCSV}
                             disabled={state.loading || !state.csvFile || state.fileUploaded}
                             className="bg-blue-500/90 hover:bg-blue-500 text-white font-semibold flex items-center gap-2
-                                       transition-colors duration-300 w-full sm:w-auto"
+                                       transition-colors duration-300 w-full sm:w-auto cursor-pointer"
                         >
                             {state.loading ? (
                                 <>
@@ -130,7 +130,7 @@ const AIAgentApp: React.FC = () => {
                         onClick={handleSendPrompt}
                         disabled={state.loading || !state.prompt}
                         className="bg-green-500/90 hover:bg-green-500 text-white font-semibold w-full
-                                   transition-colors duration-300 flex items-center gap-2"
+                                   transition-colors duration-300 flex items-center gap-2 cursor-pointer"
                     >
                         {state.loading ? (
                             <>
@@ -149,7 +149,7 @@ const AIAgentApp: React.FC = () => {
                 {state.result && (
                     <div className="bg-gray-900/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-gray-700 shadow-lg space-y-4">
                         <h2 className="text-xl sm:text-2xl font-semibold flex items-center gap-2">
-                            <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
+                            <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                             Result
                         </h2>
                         {state.result.chartType && state.result.data && state.result.data.length > 0 ? (

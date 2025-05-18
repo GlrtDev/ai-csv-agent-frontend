@@ -46,7 +46,7 @@ export const CustomFileInput: React.FC<FileInputProps> = ({
         ref={fileInputRef}
       />
       <div className="flex items-center space-x-2">
-        <Button onClick={handleButtonClick} disabled={disabled} className='cursor-pointer'>
+        <Button onClick={handleButtonClick} disabled={disabled} className='cursor-pointer bg-black/50 text-white border border-gray-700 placeholder:text-gray-400'>
           {selectedFileName ? 'Change File' : 'Click to choose file'}
         </Button>
         {selectedFileName && (
