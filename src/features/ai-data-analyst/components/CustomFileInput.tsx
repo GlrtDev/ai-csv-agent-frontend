@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input'; // We'll use this for displaying the file name
-import { Label } from '@/components/ui/label'; // For better accessibility
+import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"; // We'll use this for displaying the file name
+import { Label } from "@/components/ui/label"; // For better accessibility
 
 interface FileInputProps {
   onChange: (file: File | null) => void;
@@ -46,11 +46,17 @@ export const CustomFileInput: React.FC<FileInputProps> = ({
         ref={fileInputRef}
       />
       <div className="flex items-center space-x-2">
-        <Button onClick={handleButtonClick} disabled={disabled} className='cursor-pointer bg-black/50 text-white border border-gray-700 placeholder:text-gray-400'>
-          {selectedFileName ? 'Change File' : 'Click to choose file'}
+        <Button
+          onClick={handleButtonClick}
+          disabled={disabled}
+          className="cursor-pointer bg-black/50 text-white border border-gray-700 placeholder:text-gray-400"
+        >
+          {selectedFileName ? "Change File" : "Click to choose file"}
         </Button>
         {selectedFileName && (
-          <span className="text-sm text-muted-foreground">{selectedFileName}</span>
+          <span className="text-sm text-muted-foreground">
+            {selectedFileName}
+          </span>
         )}
       </div>
     </div>
