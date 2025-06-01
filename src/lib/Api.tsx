@@ -10,8 +10,15 @@ export const handleFileUpload = async (file: File, endpoint: 'upload-csv' | 'upl
     });
   
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || `Failed to upload CSV to ${endpoint}.`);
+      let errorDetail;
+      try {
+        const errorData = await response.json();
+        errorDetail = errorData.detail;
+      } catch (jsonError) {
+        // If parsing JSON fails, we don't have a specific detail.
+        // The original error will be caught by the generic error message below.
+      }
+      throw new Error(errorDetail || `Failed to upload CSV to ${endpoint}.`);
     }
     return response.json();
   };
