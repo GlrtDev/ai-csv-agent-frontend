@@ -158,7 +158,7 @@ const AIAgentApp: React.FC = () => {
                                 <DataChart chartData={state.result} />
                             </div>
                         ) : (
-                            <pre className="bg-black/50 text-green-400 p-4 rounded-md overflow-x-auto whitespace-pre-wrap">
+                            <pre data-testid="json-result" className="bg-black/50 text-green-400 p-4 rounded-md overflow-x-auto whitespace-pre-wrap">
                             {JSON.stringify(state.result, null, 2)}
                             </pre>
                         )}
