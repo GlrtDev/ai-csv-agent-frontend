@@ -57,7 +57,7 @@ const AIAgentApp: React.FC = () => {
       
         try {
           const result = await handleSendPromptRequest(state.prompt, state.accessToken); // Pass the token
-          setState({ ...state, loading: false, result: result.data }); // Assuming the processed data is under the 'data' key
+          setState({ ...state, loading: false, result: result.data, resultText: result.text }); // Assuming the processed data is under the 'data' key
           toast.success('Prompt processed successfully!');
         } catch (error: any) {
           setState({ ...state, loading: false, error: error.message });
@@ -154,6 +154,7 @@ const AIAgentApp: React.FC = () => {
                         </h2>
                         {state.result.chartType && state.result.data && state.result.data.length > 0 ? (
                             <div className="h-64 w-full relative">
+                                <h4> {state.resultText} </h4>
                                 <DataChart chartData={state.result} />
                             </div>
                         ) : (

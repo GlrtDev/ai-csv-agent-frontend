@@ -1,4 +1,4 @@
-import { type ChartData } from '../types/Types';
+import { type PromptResponse } from '../types/Types';
 
 export const handleFileUpload = async (file: File, endpoint: 'upload-csv' | 'upload-csv-background'): Promise<{ access_token: string; token_type: string }> => {
     const formData = new FormData();
@@ -16,36 +16,10 @@ export const handleFileUpload = async (file: File, endpoint: 'upload-csv' | 'upl
     return response.json();
   };
 
-  export const handleSendPromptRequest = async (prompt: string, token: string | null) => {
+  export const handleSendPromptRequest = async (prompt: string, token: string | null): Promise<PromptResponse> => {
     if (!token) {
       throw new Error('Authentication token is missing.');
     }
-
-    const mockChartData: ChartData = {
-      chartType: 'bar',
-      data: [{ Age: 40, Count: 10 }, { Age: 50, Count: 15 }, { Age: 60, Count: 8 }, { Age: 80, Count: 18 },{ Age: 70, Count: 28 }],
-      labelsKey: 'Age',
-      valuesKey: 'Count',
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Age'
-            },
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Count'
-            },
-          }
-        },
-      },
-    };
-    return { data: mockChartData };
-
   
     const response = await fetch('http://localhost:8000/send-prompt/', {
       method: 'POST',
@@ -57,8 +31,28 @@ export const handleFileUpload = async (file: File, endpoint: 'upload-csv' | 'upl
     });
   
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || 'Failed to send prompt.');
+      let errorData: any;
+      try {
+        errorData = await response.json();
+      } catch (jsonError) {
+        throw new Error(`Server responded with status ${response.status}: ${response.statusText}`);
+      }
+
+      if (errorData && errorData.detail) {
+        throw new Error(`API Error: ${errorData.detail}`);
+      } else if (errorData && typeof errorData === 'string') {
+        throw new Error(`API Error: ${errorData}`);
+      } else {
+        throw new Error(`Failed to send prompt. Status: ${response.status}`);
+      }
     }
-    return response.json();
+
+    const responseData: PromptResponse = await response.json();
+
+    if (typeof responseData.data === 'undefined' || typeof responseData.text === 'undefined') {
+      console.warn('Received response without expected "data" or "text" fields:', responseData);
+      throw new Error('Unexpected response format from the server. Missing "data" and/or "text" fields.');
+    }
+
+    return responseData;
   };
