@@ -82,8 +82,8 @@ const AIAgentApp: React.FC = () => {
       setState({
         ...state,
         loading: false,
-        result: result.data,
-        resultText: result.text,
+        result: result.chart_data,
+        resultText: result.summary,
       }); // Assuming the processed data is under the 'data' key
       toast.success("Prompt processed successfully!");
     } catch (error: any) {
@@ -184,9 +184,13 @@ const AIAgentApp: React.FC = () => {
             {state.result.chartType &&
             state.result.data &&
             state.result.data.length > 0 ? (
-              <div className="h-64 w-full relative">
-                <h4> {state.resultText} </h4>
-                <DataChart chartData={state.result} />
+              <div>
+                <div className="h-32 w-full relative">
+                  <h4> {state.resultText} </h4>
+                </div>
+                <div className="h-64 w-full relative">
+                  <DataChart chartData={state.result} />
+                </div>
               </div>
             ) : (
               <pre

@@ -36,6 +36,7 @@ export interface ChartOptions {
 }
 
 export interface PromptResponse {
-  data: ChartData;
-  text: string;
+  chart_data: ChartData | null;
+  summary: string;
+  error?: any;
 }

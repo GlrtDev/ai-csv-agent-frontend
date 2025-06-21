@@ -65,8 +65,8 @@ export const handleSendPromptRequest = async (
   const responseData: PromptResponse = await response.json();
 
   if (
-    typeof responseData.data === "undefined" ||
-    typeof responseData.text === "undefined"
+    typeof responseData.chart_data === "undefined" ||
+    typeof responseData.summary === "undefined"
   ) {
     console.warn(
       'Received response without expected "data" or "text" fields:',
