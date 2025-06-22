@@ -266,7 +266,7 @@ describe("AIAgentApp Component", () => {
 
     it("should display raw JSON result if no chartType or data for chart", async () => {
       const mockApiResponse: PromptResponse = {
-        chart_data: { message: "This is a raw JSON result" }, // No chartType, so this should be rendered as JSON
+        chart_data: { data: [{ x: 1, y: 2 }] }, // No chartType, so this should be rendered as JSON
         summary: "Analysis complete (raw JSON)",
       };
       mockHandleSendPromptRequest.mockResolvedValueOnce(mockApiResponse);
