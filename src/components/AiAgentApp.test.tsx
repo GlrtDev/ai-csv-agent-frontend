@@ -215,8 +215,8 @@ describe("AIAgentApp Component", () => {
 
     it("should call handleSendPromptRequest and display result on success", async () => {
       const mockApiResponse: PromptResponse = {
-        data: { chartType: "line", data: [{ x: 1, y: 2 }] },
-        text: "Analysis complete",
+        chart_data: { chartType: "line", data: [{ x: 1, y: 2 }] },
+        summary: "Analysis complete summary",
       };
       mockHandleSendPromptRequest.mockResolvedValueOnce(mockApiResponse);
 
@@ -250,18 +250,24 @@ describe("AIAgentApp Component", () => {
       await waitFor(() =>
         expect(screen.getByText("Result")).toBeInTheDocument(),
       );
+      // Check for the summary text (resultText)
       await waitFor(() =>
-        expect(screen.getByText("Analysis complete")).toBeInTheDocument(),
-      ); // resultText
-      await waitFor(() =>
-        expect(screen.getByTestId("data-chart")).toBeInTheDocument(),
-      ); // DataChart is rendered
+        expect(screen.getByText(mockApiResponse.summary)).toBeInTheDocument(),
+      );
+      // Check that DataChart is rendered with the correct chart_data
+      await waitFor(() => {
+        const dataChartElement = screen.getByTestId("data-chart");
+        expect(dataChartElement).toBeInTheDocument();
+        expect(dataChartElement).toHaveTextContent(
+          JSON.stringify(mockApiResponse.chart_data),
+        );
+      });
     });
 
     it("should display raw JSON result if no chartType or data for chart", async () => {
       const mockApiResponse: PromptResponse = {
-        data: { message: "This is a text result" },
-        text: "Analysis complete (text only)",
+        chart_data: { message: "This is a raw JSON result" }, // No chartType, so this should be rendered as JSON
+        summary: "Analysis complete (raw JSON)",
       };
       mockHandleSendPromptRequest.mockResolvedValueOnce(mockApiResponse);
 
@@ -277,14 +283,13 @@ describe("AIAgentApp Component", () => {
       await waitFor(() =>
         expect(screen.getByText("Result")).toBeInTheDocument(),
       );
-      const expectedJson = JSON.stringify(mockApiResponse.data, null, 2);
 
+      // Check for the raw JSON output of chart_data
       await waitFor(async () => {
         const resultPre = await screen.findByTestId("json-result");
         expect(resultPre).toBeInTheDocument();
-        // Check if the textContent, when parsed as JSON, matches the expected object
         expect(JSON.parse(resultPre.textContent || "")).toEqual(
-          mockApiResponse.data,
+          mockApiResponse.chart_data,
         );
       });
     });

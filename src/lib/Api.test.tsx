@@ -79,8 +79,8 @@ describe("Api functions", () => {
 
     it("should send a prompt successfully and return data", async () => {
       const mockApiResponse: PromptResponse = {
-        data: { result: "success" },
-        text: "Success text",
+        chart_data: { chartType: "bar", data: [{ label: "A", value: 10 }] },
+        summary: "Success summary text",
       };
       (fetch as vi.Mock).mockResolvedValueOnce({
         ok: true,
@@ -157,7 +157,7 @@ describe("Api functions", () => {
     });
 
     it("should throw an error if response data is missing expected fields", async () => {
-      const incompleteResponse = { someOtherData: "data" }; // Missing 'data' and 'text'
+      const incompleteResponse = { someOtherData: "data" }; // Missing 'chart_data' and 'summary'
       (fetch as vi.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => incompleteResponse,
@@ -166,7 +166,7 @@ describe("Api functions", () => {
       await expect(
         handleSendPromptRequest(mockPrompt, mockToken),
       ).rejects.toThrow(
-        'Unexpected response format from the server. Missing "data" and/or "text" fields.',
+        'Unexpected response format from the server. Missing "chart_data" and/or "summary" fields.',
       );
     });
   });

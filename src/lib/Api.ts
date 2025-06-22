@@ -69,11 +69,11 @@ export const handleSendPromptRequest = async (
     typeof responseData.summary === "undefined"
   ) {
     console.warn(
-      'Received response without expected "data" or "text" fields:',
+      'Received response without expected "chart_data" or "summary" fields:',
       responseData,
     );
     throw new Error(
-      'Unexpected response format from the server. Missing "data" and/or "text" fields.',
+      'Unexpected response format from the server. Missing "chart_data" and/or "summary" fields.',
     );
   }
 
