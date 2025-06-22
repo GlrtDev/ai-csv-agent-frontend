@@ -10,7 +10,7 @@ import {
   Bot,
 } from "lucide-react";
 import { toast } from "sonner";
-import { type AppState, initialAppState } from "@/types/appTypes"; // Import the types
+import { type AppState, initialAppState, type ChartData } from "@/types/appTypes"; // Import the types
 import { handleFileUpload, handleSendPromptRequest } from "@/lib/Api"; // Import the API functions
 import DataChart from "./DataChart";
 import { CustomFileInput } from "./CustomFileInput";
@@ -189,7 +189,7 @@ const AIAgentApp: React.FC = () => {
                   <h4> {state.resultText} </h4>
                 </div>
                 <div className="h-64 w-full relative">
-                  <DataChart chartData={state.result} />
+                  <DataChart chartData={state.result as ChartData} />
                 </div>
               </div>
             ) : (
