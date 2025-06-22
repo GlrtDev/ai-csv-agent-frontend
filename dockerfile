@@ -7,7 +7,6 @@ RUN npm install
 
 COPY . .
 
-#RUN yarn build uncomment for production
+RUN yarn build
 
-CMD ["yarn", "dev"] 
-# Or "yarn start" if you built for production
+CMD ["yarn", "start"]
