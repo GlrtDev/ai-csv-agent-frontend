@@ -1,5 +1,5 @@
 // src/lib/Api.test.tsx
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, vi, type Mock } from "vitest";
 import { handleFileUpload, handleSendPromptRequest } from "./Api";
 import { type PromptResponse } from "@/types/appTypes";
 
@@ -18,7 +18,7 @@ describe("Api functions", () => {
 
     it("should upload a file successfully and return access token", async () => {
       const mockResponse = { access_token: "test_token", token_type: "bearer" };
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
@@ -33,7 +33,7 @@ describe("Api functions", () => {
 
     it("should throw an error if file upload fails with error detail", async () => {
       const errorResponse = { detail: "Upload failed" };
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => errorResponse,
       });
@@ -44,7 +44,7 @@ describe("Api functions", () => {
     });
 
     it("should throw a generic error if file upload fails without error detail", async () => {
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => ({}), // No detail in error response
       });
@@ -54,7 +54,7 @@ describe("Api functions", () => {
       );
     });
     it("should throw an error if response is not ok and json parsing fails", async () => {
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => {
           throw new Error("JSON parse error");
@@ -82,7 +82,7 @@ describe("Api functions", () => {
         chart_data: { chartType: "bar", data: [{ label: "A", value: 10 }] },
         summary: "Success summary text",
       };
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockApiResponse,
       });
@@ -107,7 +107,7 @@ describe("Api functions", () => {
 
     it("should throw an error if sending prompt fails with detail", async () => {
       const errorResponse = { detail: "Prompt processing failed" };
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => errorResponse,
       });
@@ -119,7 +119,7 @@ describe("Api functions", () => {
 
     it("should throw an error if sending prompt fails with string error", async () => {
       const errorResponse = "A simple string error";
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => errorResponse, // Server returns a plain string
       });
@@ -130,7 +130,7 @@ describe("Api functions", () => {
     });
 
     it("should throw a generic error if sending prompt fails without specific error detail", async () => {
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => ({}), // No detail in error response
         status: 500,
@@ -142,7 +142,7 @@ describe("Api functions", () => {
     });
 
     it("should throw an error if server responds with non-JSON error", async () => {
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => {
           throw new Error("Cannot parse JSON");
@@ -158,7 +158,7 @@ describe("Api functions", () => {
 
     it("should throw an error if response data is missing expected fields", async () => {
       const incompleteResponse = { someOtherData: "data" }; // Missing 'chart_data' and 'summary'
-      (fetch as vi.Mock).mockResolvedValueOnce({
+      (fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => incompleteResponse,
       });

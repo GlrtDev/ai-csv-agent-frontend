@@ -1,11 +1,11 @@
 // src/components/AiAgentApp.test.tsx
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
 import userEvent from "@testing-library/user-event";
 import AIAgentApp from "@/features/ai-data-analyst/components/AiAgentApp";
 import * as Api from "@/lib/Api"; // To mock its functions
-import { initialAppState, type PromptResponse } from "@/types/appTypes";
+import { type PromptResponse } from "@/types/appTypes";
 
 // Mock the API module
 vi.mock("@/lib/Api", async (importOriginal) => {
@@ -46,15 +46,15 @@ vi.mock("@/features/ai-data-analyst/components/DataChart", () => ({
 }));
 
 describe("AIAgentApp Component", () => {
-  let mockHandleFileUpload: vi.Mock;
-  let mockHandleSendPromptRequest: vi.Mock;
+  let mockHandleFileUpload: Mock;
+  let mockHandleSendPromptRequest: Mock;
   // Remove mockToastError and mockToastSuccess from here, will use toast.error directly
 
   beforeEach(() => {
     // Reset mocks and state before each test
     vi.resetAllMocks();
-    mockHandleFileUpload = Api.handleFileUpload as vi.Mock;
-    mockHandleSendPromptRequest = Api.handleSendPromptRequest as vi.Mock;
+    mockHandleFileUpload = Api.handleFileUpload as Mock;
+    mockHandleSendPromptRequest = Api.handleSendPromptRequest as Mock;
 
     // Reset initial app state if necessary, though component does this internally
   });
